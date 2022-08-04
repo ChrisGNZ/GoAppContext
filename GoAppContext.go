@@ -52,7 +52,7 @@ type Exception struct {
 // initApplicationHandlerContext
 // construct a default application context
 //--------------------------------------------------------------------------------------------
-func initApplicationHandlerContext(appname string, dbpwdPrivateKey string) (*application, error) {
+func InitApplicationHandlerContext(appname string, dbpwdPrivateKey string) (*application, error) {
 
 	cfg, err := GetConfiguration(GetConfigurationFileSpec(appname), dbpwdPrivateKey)
 	if err != nil {
@@ -66,21 +66,22 @@ func initApplicationHandlerContext(appname string, dbpwdPrivateKey string) (*app
 	}
 
 	glsdb, err := OpenOTRconnection(appname, cfg, "GLS", true)
-	if err != nil {
-		sl.Err(logEntry(err.Error(), 1))
-		return nil, err
-	}
+	//if err != nil {
+	//	sl.Err(logEntry(err.Error(), 1))
+	//	return nil, err
+	//}
 
 	hbldb, err := OpenOTRconnection(appname, cfg, "HBL", true)
-	if err != nil {
-		sl.Err(logEntry(err.Error(), 1))
-		return nil, err
-	}
+	//if err != nil {
+	//	sl.Err(logEntry(err.Error(), 1))
+	//	return nil, err
+	//}
 
 	app := application{}
 	app.sysLog = sl
 	app.glsDB = glsdb
 	app.hblDB = hbldb
+	app.cacheDB = nil
 	app.configSettings = cfg
 	app.ApplicationName = appname
 
