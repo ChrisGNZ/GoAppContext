@@ -3,7 +3,7 @@ package GoAppContext
 import "testing"
 
 func TestinitApplicationHandlerContext(t *testing.T) {
-	app, err := initApplicationHandlerContext("testname", "dummy private key goes here.....")
+	app, err := InitApplicationHandlerContext("testname", "dummy private key goes here.....")
 	if err != nil {
 		t.Error("Error returned: ", err)
 	}
