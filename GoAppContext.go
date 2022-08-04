@@ -18,7 +18,7 @@ import (
 	"strings"
 )
 
-type application struct {
+type Application struct {
 	sysLog          *syslog.Writer
 	glsDB           *sql.DB
 	hblDB           *sql.DB
@@ -49,10 +49,10 @@ type Exception struct {
 	Message string `json:"message"`
 }
 
-// initApplicationHandlerContext
+// InitApplicationHandlerContext
 // construct a default application context
 //--------------------------------------------------------------------------------------------
-func InitApplicationHandlerContext(appname string, dbpwdPrivateKey string) (*application, error) {
+func InitApplicationHandlerContext(appname string, dbpwdPrivateKey string) (*Application, error) {
 
 	cfg, err := GetConfiguration(GetConfigurationFileSpec(appname), dbpwdPrivateKey)
 	if err != nil {
@@ -77,7 +77,7 @@ func InitApplicationHandlerContext(appname string, dbpwdPrivateKey string) (*app
 	//	return nil, err
 	//}
 
-	app := application{}
+	app := Application{}
 	app.sysLog = sl
 	app.glsDB = glsdb
 	app.hblDB = hbldb
@@ -201,7 +201,7 @@ func GetHTTPport(defaultPort string) string {
 
 //LogXForwardFor
 //--------------------------------------------------------------------------------------------
-func (app *application) LogXForwardFor(r *http.Request) {
+func (app *Application) LogXForwardFor(r *http.Request) {
 	xforwarded := r.Header.Values("X-Forwarded-For")
 	if len(xforwarded) > 0 {
 		app.logInfo("X-Forwarded-For: " + xforwarded[0])
@@ -224,7 +224,7 @@ func logEntry(logMsg string, runtimeSkip int) string {
 
 // logInfo
 //--------------------------------------------------------------------------------------------
-func (app *application) logInfo(msg string) {
+func (app *Application) logInfo(msg string) {
 	app.sysLog.Info(logEntry(msg, 2))
 }
 
