@@ -108,12 +108,14 @@ func GetConfiguration(configurationfilespec string, dbpwdPrivateKey string) (App
 	}
 
 	for i, dbcfg := range cfg.DatabaseConfigurations {
-		dbPassword, err := DecryptAES([]byte(dbpwdPrivateKey), strings.TrimSpace(dbcfg.DBPassword))
-		if err != nil {
-			log.Println("Unable to decrypt DBPassword: ", err)
-			return ApplicationConfiguration{}, err
+		if dbpwdPrivateKey != "" { //if a private key is specified then decrypt the passwords in the config file
+			dbPassword, err := DecryptAES([]byte(dbpwdPrivateKey), strings.TrimSpace(dbcfg.DBPassword))
+			if err != nil {
+				log.Println("Unable to decrypt DBPassword: ", err)
+				return ApplicationConfiguration{}, err
+			}
+			dbcfg.DBPassword = dbPassword
 		}
-		dbcfg.DBPassword = dbPassword
 		cfg.DatabaseConfigurations[i] = dbcfg
 	}
 
